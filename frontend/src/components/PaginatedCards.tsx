@@ -23,15 +23,20 @@ const PaginatedCards: React.FC<PaginatedCardsProps> = ({
     setCurrentPage(page);
   };
 
-  // Calculate the cards to display based on the current page
+  // Calculate the start and end indices for the cards to display
   const startIndex = (currentPage - 1) * cardsPerPage;
-  const cardsToDisplay = Array.from({ length: cardsPerPage }).map(
+  const endIndex = Math.min(startIndex + cardsPerPage, totalCards); // Adjust the end index to avoid overflow
+
+  // Cards to display based on the current page, limiting to actual number of cards
+  const cardsToDisplay = Array.from(
+    { length: endIndex - startIndex }, // Adjust length to avoid overflowing cards
     (_, index) => startIndex + index + 1
   );
+  console.log(cardsToDisplay);
 
   return (
     <div>
-      <div className="grid grid-cols-1 gap-10 gap-x-56 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-10 md:gap-x-20 xl:gap-x-44 md:grid-cols-2 xl:grid-cols-3">
         {cardsToDisplay.map((cardIndex) => (
           <Card
             key={cardIndex}
