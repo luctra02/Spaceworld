@@ -1,5 +1,5 @@
 "use client";
-import * as React from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
@@ -11,12 +11,12 @@ import {
 } from "@/components/ui/carousel";
 
 export default function Slideshow() {
-  const [api, setApi] = React.useState<CarouselApi>();
-  const [current, setCurrent] = React.useState(0);
-  const [count, setCount] = React.useState(0);
-  const [isHovered, setIsHovered] = React.useState(false); // To track hover state
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [count, setCount] = useState(0);
+  const [isHovered, setIsHovered] = useState(false); // To track hover state
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!api) return;
 
     setCount(api.scrollSnapList().length);
@@ -28,7 +28,7 @@ export default function Slideshow() {
   }, [api]);
 
   // Auto-slide functionality
-  React.useEffect(() => {
+  useEffect(() => {
     if (!api || isHovered) return; // Pause auto-slide when hovered
 
     const autoSlide = setInterval(() => {
