@@ -48,7 +48,6 @@ export default function Slideshow() {
       onMouseEnter={() => setIsHovered(true)} // Pause when hovered
       onMouseLeave={() => setIsHovered(false)} // Resume when hover ends
     >
-      <h1 className="text-4xl font-bold mb-6">Featured Games</h1>
       <Carousel setApi={setApi} className="w-full">
         <CarouselContent>
           {Array.from({ length: 5 }).map((_, index) => (
@@ -64,8 +63,15 @@ export default function Slideshow() {
         <CarouselPrevious />
         <CarouselNext />
       </Carousel>
-      <div className="py-2 text-center text-sm text-muted-foreground">
-        Slide {current} of {count}
+      <div className="flex justify-center space-x-2 mt-4">
+        {Array.from({ length: count }).map((_, index) => (
+          <span
+            key={index}
+            className={`h-3 w-3 rounded-full ${
+              current === index + 1 ? "bg-primary" : "bg-gray-400"
+            }`}
+          />
+        ))}
       </div>
     </div>
   );
