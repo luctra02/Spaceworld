@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,7 +15,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body
+        className="bg-fixed bg-cover bg-center"
+        style={{
+          backgroundImage:
+            "url(https://images.alphacoders.com/133/1339887.png)",
+        }}
+      >
         <Navbar />
         <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
       </body>

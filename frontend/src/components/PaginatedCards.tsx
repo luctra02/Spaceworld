@@ -32,7 +32,6 @@ const PaginatedCards: React.FC<PaginatedCardsProps> = ({
     { length: endIndex - startIndex }, // Adjust length to avoid overflowing cards
     (_, index) => startIndex + index + 1
   );
-  console.log(cardsToDisplay);
 
   return (
     <div>
@@ -56,6 +55,11 @@ const PaginatedCards: React.FC<PaginatedCardsProps> = ({
           color="primary"
           siblingCount={1} // Number of sibling pages to show on each side
           boundaryCount={1} // Number of boundary pages to show at the start and end
+          sx={{
+            "& .MuiPaginationItem-root": {
+              color: "white", // Text color for pagination items
+            },
+          }}
         />
       </div>
     </div>
