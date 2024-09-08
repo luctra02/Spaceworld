@@ -1,6 +1,7 @@
 {
     "conventionalCommits.scopes": [
         "frontend",
-        "CI/CD"
+        "CI/CD",
+        "backend"
     ]
 }

@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { fetchGames } from "../utils/functions";
+import fetchGames from "../utils/functions";
 
 interface Game {
   id: number;
@@ -31,6 +31,8 @@ export default function DisplayGames() {
           {games.map((game) => (
             <li key={game.id}>
               <p>{game.name}</p>
+              <p>{game.cover?.url}</p>
+              <p>{game.id}</p>
             </li>
           ))}
         </ul>
