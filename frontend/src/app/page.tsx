@@ -2,7 +2,7 @@ import Slideshow from "@/components/Slideshow";
 import PaginatedCards from "@/components/PaginatedCards";
 export default function Home() {
   const totalCards = 1000;
-  const cardsPerPage = 9;
+  const cardsPerPage = 12;
 
   return (
     <main className="flex min-h-screen flex-col p-24 prose prose-invert lg:prose-xl max-w-full">

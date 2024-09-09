@@ -1,13 +1,25 @@
 "use client";
 
-import React, { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import React, { useEffect, useState } from "react";
+import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 import Pagination from "@mui/material/Pagination";
+import fetchGames from "../utils/functions";
+import Image from "next/image";
+import Link from "next/link";
 
 type PaginatedCardsProps = {
   totalCards: number;
   cardsPerPage: number;
 };
+
+interface Game {
+  id: number;
+  name: string;
+  cover: {
+    image_id: string;
+  };
+  url: string;
+}
 
 const PaginatedCards: React.FC<PaginatedCardsProps> = ({
   totalCards,
@@ -15,49 +27,66 @@ const PaginatedCards: React.FC<PaginatedCardsProps> = ({
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(totalCards / cardsPerPage);
+  const [games, setGames] = useState<Game[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
-  const handlePageChange = (
-    event: React.ChangeEvent<unknown>,
-    page: number
-  ) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const fetchedGames = await fetchGames(currentPage, cardsPerPage);
+        if (fetchedGames) {
+          setGames(fetchedGames);
+        } else {
+          setError("No games found.");
+        }
+      } catch (error) {
+        setError("Failed to fetch data from server.");
+      }
+    };
+    fetchData();
+  }, [cardsPerPage, currentPage]);
+
+  const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-
-  // Calculate the start and end indices for the cards to display
-  const startIndex = (currentPage - 1) * cardsPerPage;
-  const endIndex = Math.min(startIndex + cardsPerPage, totalCards); // Adjust the end index to avoid overflow
-
-  // Cards to display based on the current page, limiting to actual number of cards
-  const cardsToDisplay = Array.from(
-    { length: endIndex - startIndex }, // Adjust length to avoid overflowing cards
-    (_, index) => startIndex + index + 1
-  );
-
   return (
     <div>
-      <div className="grid grid-cols-1 gap-10 md:gap-x-20 xl:gap-x-44 md:grid-cols-2 xl:grid-cols-3">
-        {cardsToDisplay.map((cardIndex) => (
-          <Card
-            key={cardIndex}
-            className="p-4 shadow-lg transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-xl"
-          >
-            <CardContent className="flex items-center justify-center h-44">
-              <span className="text-lg font-semibold">Card {cardIndex}</span>
-            </CardContent>
-          </Card>
+      <div className="grid grid-cols-1 gap-10 md:gap-x-20 xl:gap-x-44 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+        {games.map((game) => (
+          <Link href={game.url} key={game.id} className="no-underline">
+            <Card className="transition-transform duration-300 ease-in-out hover:scale-105 bg-zinc-700 border-zinc-700 bg-opacity-85">
+              <CardHeader className="items-center justify-center h-64">
+                {game.cover?.image_id && (
+                  <Image
+                    src={`https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.image_id}.jpg`}
+                    alt={game.name}
+                    width={150}
+                    height={0}
+                    className="object-cover aspect-[264/374]"
+                  />
+                )}
+              </CardHeader>
+              <CardContent className="flex justify-center h-14 overflow-hidden">
+                <span className="prose prose-invert break-words">
+                  {game.name}
+                </span>
+              </CardContent>
+              
+            </Card>
+          </Link>
         ))}
       </div>
       <div className="mt-8 flex justify-center w-full">
         <Pagination
           count={totalPages}
           page={currentPage}
-          onChange={handlePageChange}
+          onChange={(_event, value) => handlePageChange(value)}
           color="primary"
-          siblingCount={1} // Number of sibling pages to show on each side
-          boundaryCount={1} // Number of boundary pages to show at the start and end
+          siblingCount={1}
+          boundaryCount={1}
           sx={{
             "& .MuiPaginationItem-root": {
-              color: "white", // Text color for pagination items
+              color: "white",
             },
           }}
         />

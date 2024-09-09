@@ -1,6 +1,8 @@
-const fetchGames = async () => {
+const fetchGames = async (page: number, pageSize: number) => {
   try {
-    const response = await fetch("/api/fetchGames");
+    const response = await fetch(
+      `/api/fetchGames?page=${page}&pageSize=${pageSize}`
+    );
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

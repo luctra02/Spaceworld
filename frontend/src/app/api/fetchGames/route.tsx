@@ -1,4 +1,8 @@
-export async function GET() {
+export async function GET(request: Request) {
+  const url = new URL(request.url);
+  const page = parseInt(url.searchParams.get("page") || "1");
+  const pageSize = parseInt(url.searchParams.get("pageSize") || "9");
+
   const clientId = process.env.IGDB_CLIENT_ID;
   const accessToken = process.env.IGDB_ACCESS_TOKEN;
   const corsProxyUrl = process.env.CORS_PROXY_URL;
@@ -11,6 +15,10 @@ export async function GET() {
   }
 
   try {
+    // Calculate offset based on page number and page size
+    const offset = (page - 1) * pageSize;
+
+    // Fetch data with pagination parameters
     const response = await fetch(
       `${corsProxyUrl}/https://api.igdb.com/v4/games`,
       {
@@ -20,7 +28,7 @@ export async function GET() {
           "Client-ID": clientId,
           Authorization: `Bearer ${accessToken}`,
         },
-        body: "fields id, name, cover.url; limit 10;", // Adjust query as needed
+        body: `fields name, cover.image_id, url; where cover.url != null & total_rating_count >= 100; limit ${pageSize}; offset ${offset}; sort total_rating desc;`,
       }
     );
 
@@ -29,6 +37,10 @@ export async function GET() {
     }
 
     const data = await response.json();
+    console.log(
+      `Fetched ${data.length} games from IGDB with limit ${pageSize} and offset ${offset}`
+    );
+
     return new Response(JSON.stringify(data), { status: 200 });
   } catch (error) {
     console.error("Failed to fetch data from IGDB API:", error);
