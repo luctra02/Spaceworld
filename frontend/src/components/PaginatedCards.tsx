@@ -1,11 +1,17 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 import Pagination from "@mui/material/Pagination";
 import fetchGames from "../utils/functions";
 import Image from "next/image";
 import Link from "next/link";
+import { StarIcon } from "@heroicons/react/20/solid";
 
 type PaginatedCardsProps = {
   totalCards: number;
@@ -19,6 +25,8 @@ interface Game {
     image_id: string;
   };
   url: string;
+  total_rating: number;
+  total_rating_count: number;
 }
 
 const PaginatedCards: React.FC<PaginatedCardsProps> = ({
@@ -71,7 +79,14 @@ const PaginatedCards: React.FC<PaginatedCardsProps> = ({
                   {game.name}
                 </span>
               </CardContent>
-              
+              <CardFooter className="flex p-2">
+                <div className="flex items-center">
+                  <StarIcon className="w-5 h-5 text-yellow-500" />
+                  <p className="text-sm prose-invert prose ml-1">
+                    {(game.total_rating/10).toFixed(1)}({game.total_rating_count})
+                  </p>
+                </div>
+              </CardFooter>
             </Card>
           </Link>
         ))}

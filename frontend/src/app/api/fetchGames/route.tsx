@@ -28,7 +28,10 @@ export async function GET(request: Request) {
           "Client-ID": clientId,
           Authorization: `Bearer ${accessToken}`,
         },
-        body: `fields name, cover.image_id, url; where cover.url != null & total_rating_count >= 100; limit ${pageSize}; offset ${offset}; sort total_rating desc;`,
+        body: `fields name, total_rating, total_rating_count, cover.image_id, url; 
+        where cover.url != null & total_rating_count >= 100; 
+        limit ${pageSize}; offset ${offset}; 
+        sort total_rating desc;`,
       }
     );
 
