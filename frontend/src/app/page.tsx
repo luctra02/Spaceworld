@@ -1,5 +1,5 @@
 import Slideshow from "@/components/Slideshow";
-import PaginatedCards from "@/components/PaginatedCards";
+import DisplayGames from "@/components/DisplayGames";
 export default function Home() {
   const totalCards = 1000;
   const cardsPerPage = 12;
@@ -9,7 +9,7 @@ export default function Home() {
       <h2>Featured Games</h2>
       <Slideshow />
       <h2 className="mt-20">All Games</h2>
-      <PaginatedCards totalCards={totalCards} cardsPerPage={cardsPerPage} />
+      <DisplayGames totalCards={totalCards} cardsPerPage={cardsPerPage} />
     </main>
   );
 }

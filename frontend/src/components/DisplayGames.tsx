@@ -8,14 +8,15 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import Pagination from "@mui/material/Pagination";
-import fetchGames from "../utils/functions";
+import { fetchGames, fetchSearchedGames } from "../utils/functions";
 import Image from "next/image";
 import Link from "next/link";
 import { StarIcon } from "@heroicons/react/20/solid";
 
-type PaginatedCardsProps = {
+type DisplayGamesProps = {
   totalCards: number;
   cardsPerPage: number;
+  search?: string | false;
 };
 
 interface Game {
@@ -29,9 +30,10 @@ interface Game {
   total_rating_count: number;
 }
 
-const PaginatedCards: React.FC<PaginatedCardsProps> = ({
+const DisplayGames: React.FC<DisplayGamesProps> = ({
   totalCards,
   cardsPerPage,
+  search = false,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(totalCards / cardsPerPage);
@@ -40,19 +42,36 @@ const PaginatedCards: React.FC<PaginatedCardsProps> = ({
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const fetchedGames = await fetchGames(currentPage, cardsPerPage);
-        if (fetchedGames) {
-          setGames(fetchedGames);
-        } else {
-          setError("No games found.");
+      if (search) {
+        try {
+          const fetchedGames = await fetchSearchedGames(
+            currentPage,
+            cardsPerPage,
+            search
+          );
+          if (fetchedGames) {
+            setGames(fetchedGames);
+          } else {
+            setError("No games found.");
+          }
+        } catch (error) {
+          setError("Failed to fetch data from server.");
         }
-      } catch (error) {
-        setError("Failed to fetch data from server.");
+      } else {
+        try {
+          const fetchedGames = await fetchGames(currentPage, cardsPerPage);
+          if (fetchedGames) {
+            setGames(fetchedGames);
+          } else {
+            setError("No games found.");
+          }
+        } catch (error) {
+          setError("Failed to fetch data from server.");
+        }
       }
     };
     fetchData();
-  }, [cardsPerPage, currentPage]);
+  }, [cardsPerPage, currentPage, search]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -61,7 +80,12 @@ const PaginatedCards: React.FC<PaginatedCardsProps> = ({
     <div>
       <div className="grid grid-cols-1 gap-10 md:gap-x-20 xl:gap-x-44 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
         {games.map((game) => (
-          <Link href={game.url} key={game.id} className="no-underline">
+          <Link
+            href={game.url}
+            key={game.id}
+            className="no-underline"
+            target="_blank"
+          >
             <Card className="transition-transform duration-300 ease-in-out hover:scale-105 bg-zinc-700 border-zinc-700 bg-opacity-85">
               <CardHeader className="items-center justify-center h-64">
                 {game.cover?.image_id && (
@@ -83,7 +107,8 @@ const PaginatedCards: React.FC<PaginatedCardsProps> = ({
                 <div className="flex items-center">
                   <StarIcon className="w-5 h-5 text-yellow-500" />
                   <p className="text-sm prose-invert prose ml-1">
-                    {(game.total_rating/10).toFixed(1)}({game.total_rating_count})
+                    {(game.total_rating / 10).toFixed(1)}(
+                    {game.total_rating_count})
                   </p>
                 </div>
               </CardFooter>
@@ -110,4 +135,4 @@ const PaginatedCards: React.FC<PaginatedCardsProps> = ({
   );
 };
 
-export default PaginatedCards;
+export default DisplayGames;
