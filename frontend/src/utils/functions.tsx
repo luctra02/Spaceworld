@@ -19,7 +19,7 @@ const fetchSearchedGames = async (
   page: number,
   pageSize: number,
   search: string
-) => {
+): Promise<{ data: any; totalCount: number | null }> => {
   try {
     const response = await fetch(
       `/api/fetchSearchedGames?search=${search}&page=${page}&pageSize=${pageSize}`
@@ -30,9 +30,18 @@ const fetchSearchedGames = async (
     }
 
     const data = await response.json();
-    return data;
+    const totalGames = response.headers.get("total-count");
+
+    return {
+      data,
+      totalCount: totalGames ? parseInt(totalGames, 10) : null,
+    };
   } catch (error) {
     console.error("Failed to fetch data from server:", error);
+    return {
+      data: [],
+      totalCount: null,
+    };
   }
 };
 

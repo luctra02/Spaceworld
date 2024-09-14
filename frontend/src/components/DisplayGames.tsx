@@ -14,7 +14,7 @@ import Link from "next/link";
 import { StarIcon } from "@heroicons/react/20/solid";
 
 type DisplayGamesProps = {
-  totalCards: number;
+  totalCards?: number;
   cardsPerPage: number;
   search?: string | false;
 };
@@ -31,26 +31,28 @@ interface Game {
 }
 
 const DisplayGames: React.FC<DisplayGamesProps> = ({
-  totalCards,
+  totalCards = 0,
   cardsPerPage,
   search = false,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(totalCards / cardsPerPage);
   const [games, setGames] = useState<Game[]>([]);
+  const [totalGames, setTotalGames] = useState<number | null>(totalCards);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search]);
 
   useEffect(() => {
     const fetchData = async () => {
       if (search) {
         try {
-          const fetchedGames = await fetchSearchedGames(
-            currentPage,
-            cardsPerPage,
-            search
-          );
+          const { data: fetchedGames, totalCount: totalCount } =
+            await fetchSearchedGames(currentPage, cardsPerPage, search);
           if (fetchedGames) {
             setGames(fetchedGames);
+            setTotalGames(totalCount);
           } else {
             setError("No games found.");
           }
@@ -76,6 +78,11 @@ const DisplayGames: React.FC<DisplayGamesProps> = ({
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
+  const totalPages =
+    totalGames !== null
+      ? Math.ceil(totalGames / cardsPerPage)
+      : Math.ceil(totalCards / cardsPerPage);
+
   return (
     <div>
       <div className="grid grid-cols-1 gap-10 md:gap-x-20 xl:gap-x-44 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">

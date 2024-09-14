@@ -1,7 +1,7 @@
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const page = parseInt(url.searchParams.get("page") || "1");
-  const pageSize = parseInt(url.searchParams.get("pageSize") || "9");
+  const pageSize = parseInt(url.searchParams.get("pageSize") || "12");
 
   const clientId = process.env.IGDB_CLIENT_ID;
   const accessToken = process.env.IGDB_ACCESS_TOKEN;

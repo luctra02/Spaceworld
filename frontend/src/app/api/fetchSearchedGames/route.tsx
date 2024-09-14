@@ -1,7 +1,7 @@
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const page = parseInt(url.searchParams.get("page") || "1");
-  const pageSize = parseInt(url.searchParams.get("pageSize") || "9");
+  const pageSize = parseInt(url.searchParams.get("pageSize") || "12");
   const search = url.searchParams.get("search") || "";
 
   const clientId = process.env.IGDB_CLIENT_ID;
@@ -40,13 +40,19 @@ export async function GET(request: Request) {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
+    const totalGames = response.headers.get("x-count");
 
     const data = await response.json();
     console.log(
       `Fetched ${data.length} games from IGDB with search ${search} limit ${pageSize} and offset ${offset}`
     );
 
-    return new Response(JSON.stringify(data), { status: 200 });
+    return new Response(JSON.stringify(data), {
+      status: 200,
+      headers: {
+        "total-count": totalGames || "0",
+      },
+    });
   } catch (error) {
     console.error("Failed to fetch data from IGDB API:", error);
     return new Response(JSON.stringify({ error: "Failed to fetch data." }), {
