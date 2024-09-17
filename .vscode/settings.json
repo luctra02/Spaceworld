@@ -3,5 +3,6 @@
         "frontend",
         "CI/CD",
         "backend"
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
