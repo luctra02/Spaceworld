@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
+import AuthProvider from "./context/AuthProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,8 +23,10 @@ export default function RootLayout({
             "url(https://images.alphacoders.com/133/1339887.png)",
         }}
       >
-        <Navbar />
-        <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
+        <AuthProvider>
+          <Navbar />
+          <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
+        </AuthProvider>
       </body>
     </html>
   );
