@@ -39,7 +39,12 @@ export const options: NextAuthOptions = {
           }
         }
       })
+      
   ],
+
+  pages: {
+    signIn: "/auth/signin", // Custom sign-in page
+  },
 
   callbacks: {
     async signIn({account, profile}){
