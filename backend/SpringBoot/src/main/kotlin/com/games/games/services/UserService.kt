@@ -11,10 +11,13 @@ class UserService {
     @Autowired
     lateinit var userRepo: UserRepository
 
-    fun createUser(username: String): User {
+    fun createUser(userId: Long, username: String): User {
         val newUser = User().apply {
+            this.userId = userId // Set the userId manually
             this.username = username
+            this.favoriteGames = mutableListOf() // Initialize favoriteGames as an empty list
         }
-        return userRepo.save(newUser) // This returns the user with the auto-generated ID
+        return userRepo.save(newUser) // Save the user with the provided userId
     }
 }
+

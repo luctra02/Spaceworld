@@ -11,24 +11,24 @@ import org.springframework.transaction.annotation.Transactional
 class FavoritesService {
 
     @Autowired
-    lateinit var UserRepo: UserRepository
+    lateinit var userRepo: UserRepository
 
     @Transactional
     fun addGameToFavorites(userId: Long, game: Game): User {
         // Retrieve the user by their ID
-        val user = UserRepo.findById(userId)
+        val user = userRepo.findById(userId)
             .orElseThrow { RuntimeException("User not found with id: $userId") }
 
         // Add the new game to the user's favoriteGames list
         user.favoriteGames += game
 
         // Save the updated user object
-        return UserRepo.save(user)
+        return userRepo.save(user)
     }
 
     // Function to retrieve all favorite games for a given userId
     fun getGamesByUserId(userId: Long): List<Game> {
-        val user = UserRepo.findById(userId)
+        val user = userRepo.findById(userId)
             .orElseThrow { RuntimeException("User not found with id: $userId") }
 
         // Return the list of favorite games
@@ -36,7 +36,7 @@ class FavoritesService {
     }
 
     fun deleteGameByUserId(userId: Long, gameId: Long){
-        val user = UserRepo.findById(userId)
+        val user = userRepo.findById(userId)
             .orElseThrow { RuntimeException("User not found with id: $userId") }
 
         // Find the game to delete from the user's favoriteGames list
@@ -46,7 +46,7 @@ class FavoritesService {
         user.favoriteGames = updatedGames
 
         // Save the updated user entity
-        UserRepo.save(user)
+        userRepo.save(user)
     }
 
 }

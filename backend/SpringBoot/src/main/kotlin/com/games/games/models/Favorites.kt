@@ -7,13 +7,13 @@ import jakarta.persistence.*
 class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val userId: Long = 0
+    @Column(name = "user_id")
+    var userId: Long? = null
 
     @Column(name = "username", nullable = false)
     var username: String = ""
 
-    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @OneToMany(cascade = [CascadeType.ALL])
     @JoinColumn(name = "user_id")
     var favoriteGames: List<Game> = mutableListOf()
 }
@@ -23,6 +23,7 @@ class User {
 class Game {
 
     @Id
+    @Column(name = "id")
     val id: Long = 0
 
     @Column(name = "name", nullable = false)
@@ -47,7 +48,7 @@ class Game {
 class Cover {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     val id: Long = 0
 
     @Column(name = "image_id", nullable = false)
