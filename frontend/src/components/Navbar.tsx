@@ -33,15 +33,16 @@ export default function Navbar() {
           </Link>
         ) : (
           <div className="ml-6 flex items-center gap-4">
-            {session?.user?.image && (
+            {session?.user?.picture && (
               <Image
-                src={session.user.image}
+                src={session.user.picture}
                 alt="User Profile"
                 width={32}
                 height={32}
                 className="rounded-full"
               />
             )}
+
             <Link href="/api/auth/signout">
               <Button>Sign out</Button>
             </Link>

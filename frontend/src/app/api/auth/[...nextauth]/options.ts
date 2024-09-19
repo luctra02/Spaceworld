@@ -44,11 +44,24 @@ export const options: NextAuthOptions = {
 
 
   callbacks: {
-    async signIn({account, profile}){
-        if(!profile?.email){
-            throw new Error('No profile')
-        }
-        return true
+    async jwt({ token, account}) {
+      // Add the access token to the token object if available
+      if (account?.access_token) {
+        token.accessToken = account.access_token;
+      }
+      
+      // Optionally, add the user ID
+      if (account?.providerAccountId) {
+        token.userId = account.providerAccountId;
+      }
+      return token;
+    },
+  
+    async session({ session, token }) {
+      // Include the access token in the session
+      session.user = token as any;
+      return session;
     }
   }
+  
 };
