@@ -21,7 +21,7 @@ class UserController {
 
     // Find a user by userId (GET request)
     @GetMapping("/users/{userId}")
-    fun findUser(@PathVariable userId: Long): User {
+    fun findUser(@PathVariable userId: String): User {
         // Pass the userId to the service to find the user
         return userService.findUser(userId)
     }

@@ -8,7 +8,7 @@ class User {
 
     @Id
     @Column(name = "user_id")
-    var userId: Long? = null
+    var userId: String? = null
 
     @Column(name = "username", nullable = false)
     var username: String = ""

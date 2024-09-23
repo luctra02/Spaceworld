@@ -14,7 +14,7 @@ class FavoritesService {
     lateinit var userRepo: UserRepository
 
     @Transactional
-    fun addGameToFavorites(userId: Long, game: Game): User {
+    fun addGameToFavorites(userId: String, game: Game): User {
         // Retrieve the user by their ID
         val user = userRepo.findById(userId)
             .orElseThrow { RuntimeException("User not found with id: $userId") }
@@ -27,7 +27,7 @@ class FavoritesService {
     }
 
     // Function to retrieve all favorite games for a given userId
-    fun getGamesByUserId(userId: Long): List<Game> {
+    fun getGamesByUserId(userId: String): List<Game> {
         val user = userRepo.findById(userId)
             .orElseThrow { RuntimeException("User not found with id: $userId") }
 
@@ -35,7 +35,7 @@ class FavoritesService {
         return user.favoriteGames
     }
 
-    fun deleteGameByUserId(userId: Long, gameId: Long){
+    fun deleteGameByUserId(userId: String, gameId: Long){
         val user = userRepo.findById(userId)
             .orElseThrow { RuntimeException("User not found with id: $userId") }
 

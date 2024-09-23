@@ -3,6 +3,7 @@ import GoogleProvider from "next-auth/providers/google";
 import DiscordProvider from "next-auth/providers/discord";
 import CredentialsProvider from "next-auth/providers/credentials";
 
+
 export const options: NextAuthOptions = {
   providers: [
     GoogleProvider({
@@ -44,24 +45,48 @@ export const options: NextAuthOptions = {
 
 
   callbacks: {
-    async jwt({ token, account}) {
-      // Add the access token to the token object if available
-      if (account?.access_token) {
+    async jwt({ token, account, profile }) {
+      if (account && profile) {
+        const userId = account.providerAccountId;
+        const username = profile.name ?? (profile as { username?: string }).username ?? '';
+  
+        // First, try to find the user
+        const findUserResponse = await fetch(`http://localhost:8001/v1/api/users/${userId}`);
+
+        if (findUserResponse.status === 500) {
+          // If user doesn't exist, create the user
+          const createUserResponse = await fetch('http://localhost:8001/v1/api/users', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              userId: userId,
+              username: username,
+            }),
+          });
+  
+          if (!createUserResponse.ok) {
+            throw new Error('Failed to create user');
+          }
+  
+          await createUserResponse.json();
+        }
+  
+        // Only store userId and accessToken in the token
+        token.userId = userId;
         token.accessToken = account.access_token;
       }
-      
-      // Optionally, add the user ID
-      if (account?.providerAccountId) {
-        token.userId = account.providerAccountId;
-      }
+  
       return token;
     },
-  
+    
     async session({ session, token }) {
-      // Include the access token in the session
+      // Pass userId and accessToken to the session
       session.user = token as any;
       return session;
     }
   }
+  
   
 };

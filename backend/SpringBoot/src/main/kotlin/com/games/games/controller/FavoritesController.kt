@@ -15,18 +15,18 @@ class FavoritesController {
     lateinit var favoritesService: FavoritesService
 
     @PostMapping("/{userId}")
-    fun addGameToFavorites(@PathVariable userId: Long,  @Valid @RequestBody game: Game) : User {
+    fun addGameToFavorites(@PathVariable userId: String,  @Valid @RequestBody game: Game) : User {
         return favoritesService.addGameToFavorites(userId, game);
     }
 
     // Get all favorite games by user ID
     @GetMapping("/{userId}")
-    fun getFavoriteGamesByUserId(@PathVariable userId: Long): List<Game> {
+    fun getFavoriteGamesByUserId(@PathVariable userId: String): List<Game> {
         return favoritesService.getGamesByUserId(userId)
     }
 
     @DeleteMapping("/{userId}/delete/{gameId}")
-    fun deleteGameByUserId(@PathVariable userId: Long, @PathVariable gameId: Long){
+    fun deleteGameByUserId(@PathVariable userId: String, @PathVariable gameId: Long){
         return favoritesService.deleteGameByUserId(userId, gameId)
     }
 }
