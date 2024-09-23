@@ -19,5 +19,10 @@ class UserService {
         }
         return userRepo.save(newUser) // Save the user with the provided userId
     }
+
+    fun findUser(userId: Long): User{
+        val user = userRepo.findById(userId).orElseThrow { RuntimeException("User not found with id: $userId") }
+        return user;
+    }
 }
 
