@@ -1,7 +1,7 @@
 const fetchGames = async (page: number, pageSize: number) => {
   try {
     const response = await fetch(
-      `/api/fetchGames?page=${page}&pageSize=${pageSize}`
+      `/api/fetchGames?page=${page}&pageSize=${pageSize}`,
     );
 
     if (!response.ok) {
@@ -18,11 +18,11 @@ const fetchGames = async (page: number, pageSize: number) => {
 const fetchSearchedGames = async (
   page: number,
   pageSize: number,
-  search: string
+  search: string,
 ): Promise<{ data: any; totalCount: number | null }> => {
   try {
     const response = await fetch(
-      `/api/fetchSearchedGames?search=${search}&page=${page}&pageSize=${pageSize}`
+      `/api/fetchSearchedGames?search=${search}&page=${page}&pageSize=${pageSize}`,
     );
 
     if (!response.ok) {

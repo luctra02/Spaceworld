@@ -10,7 +10,7 @@ export async function GET(request: Request) {
   if (!clientId || !accessToken || !corsProxyUrl) {
     return new Response(
       JSON.stringify({ error: "Missing required environment variables." }),
-      { status: 500 }
+      { status: 500 },
     );
   }
 
@@ -32,7 +32,7 @@ export async function GET(request: Request) {
         where cover.url != null & total_rating_count >= 100; 
         limit ${pageSize}; offset ${offset}; 
         sort total_rating desc;`,
-      }
+      },
     );
 
     if (!response.ok) {
@@ -41,7 +41,7 @@ export async function GET(request: Request) {
 
     const data = await response.json();
     console.log(
-      `Fetched ${data.length} games from IGDB with limit ${pageSize} and offset ${offset}`
+      `Fetched ${data.length} games from IGDB with limit ${pageSize} and offset ${offset}`,
     );
 
     return new Response(JSON.stringify(data), { status: 200 });
