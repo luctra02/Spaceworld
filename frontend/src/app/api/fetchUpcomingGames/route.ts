@@ -1,44 +1,49 @@
 export async function GET() {
-  const clientId = process.env.IGDB_CLIENT_ID;
-  const accessToken = process.env.IGDB_ACCESS_TOKEN;
-  const corsProxyUrl = process.env.CORS_PROXY_URL;
+    const clientId = process.env.IGDB_CLIENT_ID;
+    const accessToken = process.env.IGDB_ACCESS_TOKEN;
+    const corsProxyUrl = process.env.CORS_PROXY_URL;
 
-  if (!clientId || !accessToken || !corsProxyUrl) {
-    return new Response(
-      JSON.stringify({ error: "Missing required environment variables." }),
-      { status: 500 },
-    );
-  }
-
-  try {
-    // Fetch data with pagination parameters
-    const response = await fetch(
-      `${corsProxyUrl}/https://api.igdb.com/v4/games`,
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Client-ID": clientId,
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: `fields name, total_rating, total_rating_count, cover.image_id, url; 
-        where cover.url != null & total_rating_count >= 100; 
-        sort total_rating desc;`,
-      },
-    );
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    if (!clientId || !accessToken || !corsProxyUrl) {
+        return new Response(
+            JSON.stringify({
+                error: "Missing required environment variables.",
+            }),
+            { status: 500 },
+        );
     }
 
-    const data = await response.json();
-    console.log(`Fetched ${data.length} games from IGDB`);
+    try {
+        // Fetch data with pagination parameters
+        const response = await fetch(
+            `${corsProxyUrl}/https://api.igdb.com/v4/games`,
+            {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Client-ID": clientId,
+                    Authorization: `Bearer ${accessToken}`,
+                },
+                body: `fields name, total_rating, total_rating_count, cover.image_id, url; 
+        where cover.url != null & total_rating_count >= 100; 
+        sort total_rating desc;`,
+            },
+        );
 
-    return new Response(JSON.stringify(data), { status: 200 });
-  } catch (error) {
-    console.error("Failed to fetch data from IGDB API:", error);
-    return new Response(JSON.stringify({ error: "Failed to fetch data." }), {
-      status: 500,
-    });
-  }
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log(`Fetched ${data.length} games from IGDB`);
+
+        return new Response(JSON.stringify(data), { status: 200 });
+    } catch (error) {
+        console.error("Failed to fetch data from IGDB API:", error);
+        return new Response(
+            JSON.stringify({ error: "Failed to fetch data." }),
+            {
+                status: 500,
+            },
+        );
+    }
 }
