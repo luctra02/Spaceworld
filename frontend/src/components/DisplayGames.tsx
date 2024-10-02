@@ -121,8 +121,9 @@ const DisplayGames: React.FC<DisplayGamesProps> = ({
                                 <div className="flex items-center">
                                     <StarIcon className="w-5 h-5 text-yellow-500" />
                                     <p className="text-sm prose-invert prose ml-1">
-                                        {(game.total_rating / 10).toFixed(1)}(
-                                        {game.total_rating_count})
+                                        {game.total_rating
+                                            ? `${(game.total_rating / 10).toFixed(1)} (${game.total_rating_count})`
+                                            : "No rating"}
                                     </p>
                                 </div>
                             </CardFooter>

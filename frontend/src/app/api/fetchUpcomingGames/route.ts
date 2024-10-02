@@ -3,6 +3,9 @@ export async function GET() {
     const accessToken = process.env.IGDB_ACCESS_TOKEN;
     const corsProxyUrl = process.env.CORS_PROXY_URL;
 
+    const currentTime = Math.floor(Date.now() / 1000);
+    const nextWeekTime = currentTime + 604800;
+
     if (!clientId || !accessToken || !corsProxyUrl) {
         return new Response(
             JSON.stringify({
@@ -23,9 +26,9 @@ export async function GET() {
                     "Client-ID": clientId,
                     Authorization: `Bearer ${accessToken}`,
                 },
-                body: `fields name, total_rating, total_rating_count, cover.image_id, url; 
-        where cover.url != null & total_rating_count >= 100; 
-        sort total_rating desc;`,
+                body: `fields name, artworks.image_id, url, first_release_date, summary, genres.name; 
+                where artworks.image_id != null & first_release_date >= ${currentTime} & first_release_date <= ${nextWeekTime};
+                sort first_release_date desc;`,
             },
         );
 
