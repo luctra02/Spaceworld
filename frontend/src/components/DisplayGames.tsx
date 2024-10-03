@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { SVGProps, useEffect, useState } from "react";
 import {
     Card,
     CardHeader,
@@ -11,7 +11,8 @@ import Pagination from "@mui/material/Pagination";
 import { fetchGames, fetchSearchedGames } from "../utils/functions";
 import Image from "next/image";
 import Link from "next/link";
-import { StarIcon } from "@heroicons/react/20/solid";
+import { StarIcon } from "@heroicons/react/24/solid";
+import { HeartIcon } from "@heroicons/react/24/outline";
 
 type DisplayGamesProps = {
     totalCards?: number;
@@ -102,7 +103,7 @@ const DisplayGames: React.FC<DisplayGamesProps> = ({
                     >
                         <Card className="transition-transform duration-300 ease-in-out hover:scale-105 bg-zinc-700 border-zinc-700 bg-opacity-85">
                             <CardHeader className="items-center justify-center h-64">
-                                {game.cover?.image_id && (
+                                {game.cover?.image_id ? (
                                     <Image
                                         src={`https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.image_id}.jpg`}
                                         alt={game.name}
@@ -110,6 +111,8 @@ const DisplayGames: React.FC<DisplayGamesProps> = ({
                                         height={0}
                                         className="object-cover aspect-[264/374]"
                                     />
+                                ) : (
+                                    <PlaceholderImage className="w-24 h-24" />
                                 )}
                             </CardHeader>
                             <CardContent className="flex justify-center h-14 overflow-hidden">
@@ -117,7 +120,7 @@ const DisplayGames: React.FC<DisplayGamesProps> = ({
                                     {game.name}
                                 </span>
                             </CardContent>
-                            <CardFooter className="flex p-2">
+                            <CardFooter className="flex justify-between p-2">
                                 <div className="flex items-center">
                                     <StarIcon className="w-5 h-5 text-yellow-500" />
                                     <p className="text-sm prose-invert prose ml-1">
@@ -126,6 +129,7 @@ const DisplayGames: React.FC<DisplayGamesProps> = ({
                                             : "No rating"}
                                     </p>
                                 </div>
+                                <HeartIcon className="w-8 h-8 text-red-500 hover:text-red-700 cursor-pointer" />
                             </CardFooter>
                         </Card>
                     </Link>
@@ -149,5 +153,22 @@ const DisplayGames: React.FC<DisplayGamesProps> = ({
         </div>
     );
 };
+
+export function PlaceholderImage(props: SVGProps<SVGSVGElement>) {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width={60}
+            height={60}
+            viewBox="0 0 16 16"
+            {...props}
+        >
+            <path
+                fill="white"
+                d="M6 5a2 2 0 1 1-4 0a2 2 0 0 1 4 0m9-4a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zm-3.448 6.134l-3.76 2.769a.5.5 0 0 1-.436.077l-.087-.034l-1.713-.87L1 11.8V14h14V9.751zM15 2H1v8.635l4.28-2.558a.5.5 0 0 1 .389-.054l.094.037l1.684.855l3.813-2.807a.5.5 0 0 1 .52-.045l.079.05L15 8.495z"
+            ></path>
+        </svg>
+    );
+}
 
 export default DisplayGames;
