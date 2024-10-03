@@ -30,10 +30,10 @@ class Game {
     var name: String = ""
 
     @Column(name = "total_rating")
-    var totalRating: Double? = null
+    var total_rating: Double? = null
 
     @Column(name = "total_rating_count")
-    var totalRatingCount: Int = 0
+    var total_rating_count: Int = 0
 
     @Column(name = "url", nullable = false)
     var url: String = ""
@@ -52,5 +52,5 @@ class Cover {
     val id: Long = 0
 
     @Column(name = "image_id", nullable = false)
-    var imageId: String = ""
+    var image_id: String = ""
 }
