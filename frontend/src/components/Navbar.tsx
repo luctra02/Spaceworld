@@ -7,7 +7,7 @@ import Image from "next/image";
 
 export default function Navbar() {
     const { data: session } = useSession();
-    console.log("HERRRRR!!!!!!!!!!");
+
     console.log(session);
     return (
         <nav className="w-full border-b border-x-neutral-600 p-5">
