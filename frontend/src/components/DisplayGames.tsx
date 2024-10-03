@@ -158,7 +158,6 @@ const DisplayGames: React.FC<DisplayGamesProps> = ({
             }
         } catch (error) {
             console.error("Failed to update favorites", error);
-            // Handle error (e.g., show a notification)
         }
     };
 
@@ -166,15 +165,12 @@ const DisplayGames: React.FC<DisplayGamesProps> = ({
         <div>
             <div className="grid grid-cols-1 gap-10 md:gap-x-20 xl:gap-x-44 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
                 {games.map((game) => (
-                    // <Link
-                    //     href={game.url}
-                    //     key={game.id}
-                    //     className="no-underline"
-                    //     target="_blank"
-                    // >
                     <Card
                         key={game.id}
                         className="transition-transform duration-300 ease-in-out hover:scale-105 bg-zinc-700 border-zinc-700 bg-opacity-85"
+                        onClick={() => {
+                            window.open(game.url, "_blank");
+                        }}
                     >
                         <CardHeader className="items-center justify-center h-64">
                             {game.cover?.image_id ? (
@@ -206,17 +202,22 @@ const DisplayGames: React.FC<DisplayGamesProps> = ({
                             {favoriteGames.includes(game.id) ? (
                                 <HeartSolid
                                     className="w-8 h-8 text-red-700 hover:text-red-800 cursor-pointer"
-                                    onClick={() => handleFavorites(game)} // Attach the click handler
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleFavorites(game);
+                                    }}
                                 />
                             ) : (
                                 <HeartOutline
                                     className="w-8 h-8 text-red-500 hover:text-red-700 cursor-pointer"
-                                    onClick={() => handleFavorites(game)} // Attach the click handler
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleFavorites(game);
+                                    }}
                                 />
                             )}
                         </CardFooter>
                     </Card>
-                    //</Link>
                 ))}
             </div>
             <div className="mt-8 flex justify-center w-full">
