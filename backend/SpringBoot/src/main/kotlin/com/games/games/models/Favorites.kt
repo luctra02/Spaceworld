@@ -13,8 +13,13 @@ class User {
     @Column(name = "username", nullable = false)
     var username: String = ""
 
-    @OneToMany(cascade = [CascadeType.ALL])
-    @JoinColumn(name = "user_id")
+    // Changed cascade from ALL to REMOVE to avoid cascading deletes.
+    @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "favorites", // This is the join table
+        joinColumns = [JoinColumn(name = "user_id")], // Column for User
+        inverseJoinColumns = [JoinColumn(name = "game_id")] // Column for Game
+    )
     var favoriteGames: List<Game> = mutableListOf()
 }
 
@@ -51,6 +56,6 @@ class Cover {
     @Column(name = "id")
     val id: Long = 0
 
-    @Column(name = "image_id", nullable = false)
+    @Column(name = "image_id")
     var image_id: String = ""
 }
