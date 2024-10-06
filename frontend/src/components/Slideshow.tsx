@@ -12,6 +12,7 @@ import {
 import { fetchUpcomingGames } from "../utils/functions";
 import Image from "next/image";
 import Link from "next/link";
+import FavoriteButton from "@/components/FavoriteButton";
 
 interface Game {
     id: number;
@@ -27,6 +28,11 @@ interface Game {
     name: string;
     summary: string;
     url: string;
+    total_rating: number;
+    total_rating_count: number;
+    cover: {
+        image_id: string;
+    };
 }
 
 export default function Slideshow() {
@@ -131,6 +137,9 @@ export default function Slideshow() {
                                             {game.summary}
                                         </p>
                                     </Link>
+                                    <div className="absolute top-4 right-2">
+                                        <FavoriteButton game={game} />
+                                    </div>
                                 </div>
                             </CardContent>
                         </CarouselItem>

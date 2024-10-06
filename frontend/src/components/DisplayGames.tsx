@@ -10,11 +10,9 @@ import {
 import Pagination from "@mui/material/Pagination";
 import { fetchGames, fetchSearchedGames } from "../utils/functions";
 import Image from "next/image";
-import Link from "next/link";
 import { StarIcon } from "@heroicons/react/24/solid";
-import { HeartIcon as HeartOutline } from "@heroicons/react/24/outline";
-import { HeartIcon as HeartSolid } from "@heroicons/react/24/solid";
 import { useSession } from "next-auth/react";
+import FavoriteButton from "./FavoriteButton";
 
 type DisplayGamesProps = {
     totalCards?: number;
@@ -44,30 +42,6 @@ const DisplayGames: React.FC<DisplayGamesProps> = ({
     const [error, setError] = useState<string | null>(null);
     const [favoriteGames, setFavoriteGames] = useState<number[]>([]);
     const { data: session } = useSession();
-
-    const fetchFavorites = async (userId: string) => {
-        const response = await fetch(
-            `http://localhost:8001/v1/api/favorites/${userId}`,
-        );
-        const favorites = await response.json();
-        console.log("HERRRR§!!!!!!");
-        console.log(favorites);
-        return favorites.map((game: Game) => game.id); // Returning only game IDs
-    };
-
-    useEffect(() => {
-        const fetchUserFavorites = async () => {
-            if (session?.user?.userId) {
-                // Check if the user is logged in
-                const favoriteIds = await fetchFavorites(session.user.userId);
-                setFavoriteGames(favoriteIds);
-            } else {
-                setFavoriteGames([]); // Clear favorite games if user is not logged in
-            }
-        };
-
-        fetchUserFavorites();
-    }, [session]);
 
     useEffect(() => {
         setCurrentPage(1);
@@ -119,48 +93,6 @@ const DisplayGames: React.FC<DisplayGamesProps> = ({
             ? Math.ceil(totalGames / cardsPerPage)
             : Math.ceil(totalCards / cardsPerPage);
 
-    const handleFavorites = async (game: Game) => {
-        // Expecting game to be of type Game
-        if (!session) {
-            // Show a message or redirect to login
-            alert("You need to log in to add favorites.");
-            return;
-        }
-
-        const isFavorite = favoriteGames.includes(game.id); // Check if the game is already favored
-
-        try {
-            if (isFavorite) {
-                // Remove game from favorites
-                await fetch(
-                    `http://localhost:8001/v1/api/favorites/${session.user.userId}/delete/${game.id}`,
-                    {
-                        method: "DELETE",
-                    },
-                );
-                setFavoriteGames((prev) => prev.filter((id) => id !== game.id)); // Update local state
-            } else {
-                // Add game to favorites
-                await fetch(
-                    `http://localhost:8001/v1/api/favorites/${session.user.userId}`,
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            userId: session.user.userId, // Include user ID
-                            ...game, // Spread the game object to include its properties
-                        }),
-                    },
-                );
-                setFavoriteGames((prev) => [...prev, game.id]); // Update local state
-            }
-        } catch (error) {
-            console.error("Failed to update favorites", error);
-        }
-    };
-
     return (
         <div>
             <div className="grid grid-cols-1 gap-10 md:gap-x-20 xl:gap-x-44 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
@@ -199,23 +131,7 @@ const DisplayGames: React.FC<DisplayGamesProps> = ({
                                         : "No rating"}
                                 </p>
                             </div>
-                            {favoriteGames.includes(game.id) ? (
-                                <HeartSolid
-                                    className="w-8 h-8 text-red-700 hover:text-red-800 cursor-pointer"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleFavorites(game);
-                                    }}
-                                />
-                            ) : (
-                                <HeartOutline
-                                    className="w-8 h-8 text-red-500 hover:text-red-700 cursor-pointer"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleFavorites(game);
-                                    }}
-                                />
-                            )}
+                            <FavoriteButton game={game} />
                         </CardFooter>
                     </Card>
                 ))}

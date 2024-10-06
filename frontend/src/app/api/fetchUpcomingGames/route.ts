@@ -26,7 +26,7 @@ export async function GET() {
                     "Client-ID": clientId,
                     Authorization: `Bearer ${accessToken}`,
                 },
-                body: `fields name, artworks.image_id, url, first_release_date, summary, genres.name; 
+                body: `fields name, artworks.image_id, url, first_release_date, summary, genres.name, total_rating, total_rating_count, cover.image_id; 
                 where artworks.image_id != null & first_release_date >= ${currentTime} & first_release_date <= ${nextWeekTime};
                 sort first_release_date desc;`,
             },
