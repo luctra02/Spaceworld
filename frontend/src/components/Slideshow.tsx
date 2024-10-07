@@ -105,7 +105,6 @@ export default function Slideshow() {
                                         className="w-full h-full object-cover"
                                     />
                                 )}
-                                {/* Transparent Black Block */}
                                 <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-4">
                                     <Link
                                         href={game.url}

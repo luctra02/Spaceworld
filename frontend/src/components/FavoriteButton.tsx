@@ -1,4 +1,3 @@
-// components/FavoriteButton.tsx
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { HeartIcon as HeartOutline } from "@heroicons/react/24/outline";

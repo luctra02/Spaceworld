@@ -1,4 +1,4 @@
-"use client"; 
+"use client";
 
 import DisplayGames from "@/components/DisplayGames";
 import { useSession } from "next-auth/react";
