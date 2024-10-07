@@ -16,7 +16,7 @@ interface Game {
 }
 
 interface FavoriteButtonProps {
-    game: Game; // Accept the whole Game object
+    game: Game;
 }
 
 const FavoriteButton: React.FC<FavoriteButtonProps> = ({ game }) => {

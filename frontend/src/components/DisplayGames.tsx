@@ -18,6 +18,7 @@ type DisplayGamesProps = {
     totalCards?: number;
     cardsPerPage: number;
     search?: string | false;
+    favorites?: boolean | false;
 };
 
 interface Game {
@@ -35,12 +36,12 @@ const DisplayGames: React.FC<DisplayGamesProps> = ({
     totalCards = 0,
     cardsPerPage,
     search = false,
+    favorites = false,
 }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [games, setGames] = useState<Game[]>([]);
     const [totalGames, setTotalGames] = useState<number | null>(totalCards);
     const [error, setError] = useState<string | null>(null);
-    const [favoriteGames, setFavoriteGames] = useState<number[]>([]);
     const { data: session } = useSession();
 
     useEffect(() => {
@@ -66,6 +67,21 @@ const DisplayGames: React.FC<DisplayGamesProps> = ({
                 } catch (error) {
                     setError("Failed to fetch data from server.");
                 }
+            } else if (favorites) {
+                if (session?.user?.userId) {
+                    const response = await fetch(
+                        `http://localhost:8001/v1/api/favorites/${session.user.userId}`,
+                    );
+                    const favorites = await response.json();
+
+                    const start = (currentPage - 1) * cardsPerPage;
+                    const end = start + cardsPerPage;
+
+                    const paginatedFavorites = favorites.slice(start, end);
+
+                    setGames(paginatedFavorites);
+                    setTotalGames(favorites.length);
+                }
             } else {
                 try {
                     const fetchedGames = await fetchGames(
@@ -83,7 +99,7 @@ const DisplayGames: React.FC<DisplayGamesProps> = ({
             }
         };
         fetchData();
-    }, [cardsPerPage, currentPage, search]);
+    }, [cardsPerPage, currentPage, favorites, search, session?.user.userId]);
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
