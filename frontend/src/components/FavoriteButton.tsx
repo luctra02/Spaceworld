@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import { HeartIcon as HeartOutline } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolid } from "@heroicons/react/24/solid";
 import { Game } from "@/types/game";
+import { useToast } from "@/hooks/use-toast";
 
 interface FavoriteButtonProps {
     game: Game;
@@ -11,6 +12,7 @@ interface FavoriteButtonProps {
 const FavoriteButton: React.FC<FavoriteButtonProps> = ({ game }) => {
     const { data: session } = useSession();
     const [favoriteGames, setFavoriteGames] = useState<number[]>([]);
+    const { toast } = useToast();
 
     // Fetch favorites when session changes
     useEffect(() => {
@@ -34,7 +36,10 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({ game }) => {
 
     const handleFavorites = async () => {
         if (!session) {
-            alert("You need to log in to add favorites.");
+            toast({
+                title: "You need to log in to add favorites!",
+                description: "Please log in to manage your favorite games.",
+            });
             return;
         }
 
@@ -80,6 +85,10 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({ game }) => {
             onClick={(e) => {
                 e.stopPropagation();
                 handleFavorites();
+                toast({
+                    title: "Removed from Favorites",
+                    description: `${game.name} was removed from your favorites.`,
+                });
             }}
         />
     ) : (
@@ -88,6 +97,10 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({ game }) => {
             onClick={(e) => {
                 e.stopPropagation();
                 handleFavorites();
+                toast({
+                    title: "Added to Favorites",
+                    description: `${game.name} was added to your favorites.`,
+                });
             }}
         />
     );

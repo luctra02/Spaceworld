@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import AuthProvider from "./context/AuthProvider";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -27,6 +28,7 @@ export default function RootLayout({
                     <Navbar />
                     <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
                 </AuthProvider>
+                <Toaster />
             </body>
         </html>
     );
