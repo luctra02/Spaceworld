@@ -27,8 +27,8 @@ export default function RootLayout({
                 <AuthProvider>
                     <Navbar />
                     <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
+                    <Toaster />
                 </AuthProvider>
-                <Toaster />
             </body>
         </html>
     );
