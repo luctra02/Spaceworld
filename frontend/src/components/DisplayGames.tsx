@@ -13,6 +13,7 @@ import Image from "next/image";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { useSession } from "next-auth/react";
 import FavoriteButton from "./FavoriteButton";
+import { Game } from "@/types/game";
 
 type DisplayGamesProps = {
     totalCards?: number;
@@ -21,16 +22,6 @@ type DisplayGamesProps = {
     favorites?: boolean | false;
 };
 
-interface Game {
-    id: number;
-    name: string;
-    cover: {
-        image_id: string;
-    };
-    url: string;
-    total_rating: number;
-    total_rating_count: number;
-}
 
 const DisplayGames: React.FC<DisplayGamesProps> = ({
     totalCards = 0,

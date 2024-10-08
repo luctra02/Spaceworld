@@ -2,17 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { HeartIcon as HeartOutline } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolid } from "@heroicons/react/24/solid";
-
-interface Game {
-    id: number;
-    name: string;
-    cover: {
-        image_id: string;
-    };
-    url: string;
-    total_rating: number;
-    total_rating_count: number;
-}
+import { Game } from "@/types/game";
 
 interface FavoriteButtonProps {
     game: Game;
