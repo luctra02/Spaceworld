@@ -24,5 +24,17 @@ class UserService {
         val user = userRepo.findById(userId).orElseThrow { RuntimeException("User not found with id: $userId") }
         return user;
     }
+
+    fun updateUser(userId: String, username: String): User{
+        val newUser = userRepo.getReferenceById(userId);
+        newUser.username = username;
+
+        return userRepo.save(newUser);
+    }
+
+    fun findUsername(userId: String): String{
+        val user = userRepo.findById(userId).orElseThrow { RuntimeException("User not found with id: $userId") }
+        return user.username;
+    }
 }
 
