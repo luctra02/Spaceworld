@@ -26,10 +26,13 @@ class UserController {
         // Pass the userId to the service to find the user
         return userService.findUser(userId)
     }
+    
+    data class UpdateUsernameRequest(val username: String)
+
     @PutMapping("/users/username/{userId}")
-    fun updateUser(@PathVariable userId: String, @Valid @RequestBody username: String): User {
-        // Pass the userId to the service to find the user
-        return userService.updateUser(userId, username)
+    fun updateUser(@PathVariable userId: String, @Valid @RequestBody request: UpdateUsernameRequest): User {
+        // Call the service layer with the userId and extracted username from the request body
+        return userService.updateUser(userId, request.username)
     }
 
     @GetMapping("/users/username/{userId}")

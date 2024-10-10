@@ -25,11 +25,12 @@ class UserService {
         return user;
     }
 
-    fun updateUser(userId: String, username: String): User{
-        val newUser = userRepo.getReferenceById(userId);
-        newUser.username = username;
+    fun updateUser(userId: String, username: String): User {
+        val user = userRepo.findById(userId)
+            .orElseThrow { IllegalArgumentException("User not found with ID: $userId") }
 
-        return userRepo.save(newUser);
+        user.username = username
+        return userRepo.save(user) // Save the updated user object
     }
 
     fun findUsername(userId: String): String{
