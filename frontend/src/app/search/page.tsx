@@ -4,8 +4,11 @@ import { useSearchParams } from "next/navigation";
 import DisplayGames from "@/components/DisplayGames";
 
 const SearchResults = () => {
-    const searchParams = useSearchParams(); // Use searchParams for query parameters
+    
+    const searchParams = useSearchParams(); // Get search params only on client-side
     const query = searchParams.get("query") || false; // Get the query from the URL
+
+
 
     return (
         <main className="flex min-h-screen flex-col p-24 prose prose-invert lg:prose-xl max-w-full">
