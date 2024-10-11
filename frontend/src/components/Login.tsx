@@ -8,7 +8,6 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { useEffect, useState } from "react";
 import { toast } from "@/hooks/use-toast";
 
-
 export default function Login() {
     const { data: session } = useSession();
     const [username, setUsername] = useState(""); // Initially empty

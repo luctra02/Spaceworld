@@ -22,7 +22,6 @@ type DisplayGamesProps = {
     favorites?: boolean | false;
 };
 
-
 const DisplayGames: React.FC<DisplayGamesProps> = ({
     totalCards = 0,
     cardsPerPage,
