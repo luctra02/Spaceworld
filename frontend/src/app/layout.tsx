@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import AuthProvider from "./context/AuthProvider";
 import { Toaster } from "@/components/ui/toaster";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -26,7 +27,12 @@ export default function RootLayout({
             >
                 <AuthProvider>
                     <Navbar />
-                    <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
+                    {/* Wrap the children in Suspense with a fallback */}
+                    <AppRouterCacheProvider>
+                        <Suspense fallback={<p>Loading content...</p>}>
+                            {children}
+                        </Suspense>
+                    </AppRouterCacheProvider>
                     <Toaster />
                 </AuthProvider>
             </body>
