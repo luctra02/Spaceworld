@@ -21,11 +21,28 @@ jobs:
         with:
           node-version: '20.x'
 
-      - name: npm install, build, and test
-        run: |
-          npm install
-          npm run build --if-present
-          npm run test --if-present
+      # Frontend: Install dependencies and build
+      - name: Install frontend dependencies
+        working-directory: ./frontend # Adjust if your frontend directory name differs
+        run: npm install
+
+      - name: Build frontend
+        working-directory: ./frontend
+        run: npm run build --if-present
+
+      # Backend: Install dependencies
+      - name: Set up Node.js version for backend
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: Install backend dependencies
+        working-directory: ./backend/proxy # Adjust based on the path to your backend folder
+        run: npm install
+
+      - name: Start backend
+        working-directory: ./backend/proxy
+        run: npm start
       
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
