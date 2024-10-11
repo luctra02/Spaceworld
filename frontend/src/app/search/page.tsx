@@ -1,6 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import DisplayGames from "@/components/DisplayGames";
 
 const SearchResults = () => {
@@ -13,10 +14,12 @@ const SearchResults = () => {
                 Search Results for:
                 {query ? ` ${query}` : " No query provided"}
             </h3>
-            <DisplayGames
-                cardsPerPage={12}
-                search={encodeURIComponent(query)}
-            />
+            <Suspense fallback={<p>Loading search results...</p>}>
+                <DisplayGames
+                    cardsPerPage={12}
+                    search={encodeURIComponent(query)}
+                />
+            </Suspense>
         </main>
     );
 };
