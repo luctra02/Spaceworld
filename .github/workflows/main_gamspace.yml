@@ -27,12 +27,26 @@ jobs:
               working-directory: ./frontend
               run: npm run build --if-present
 
+              # List contents of the current working directory
+            - name: List current working directory
+              run: dir # For Windows, use ls for Linux
+
+              # List contents of the frontend directory to check for .next folder
+            - name: List frontend directory contents
+              working-directory: ./frontend
+              run: dir # For Windows, use ls for Linux
+
+          # List contents of the .next directory specifically
+            - name: List .next directory contents
+              working-directory: ./frontend
+              run: dir .next # For Windows, use ls .next for Linux
+
             # Upload the built artifacts to be used in the deployment job
             - name: Upload frontend build artifacts
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v3
               with:
                   name: build
-                  path: /frontend/.next # This path should point to the build output
+                  path: ./frontend/.next # This path should point to the build output
                   if-no-files-found: error
 
     deploy:
@@ -47,7 +61,7 @@ jobs:
         steps:
             # Download the previously uploaded artifact from the build job
             - name: Download artifact from build job
-              uses: actions/download-artifact@v4
+              uses: actions/download-artifact@v3
               with:
                   name: build
 
