@@ -27,15 +27,13 @@ jobs:
               working-directory: ./frontend
               run: npm run build --if-present
 
-            - name: Verify build output
-              run: ls -R ./frontend/.next # This will list all files in the .next directory for debugging
-
             # Upload the built artifacts to be used in the deployment job
             - name: Upload frontend build artifacts
               uses: actions/upload-artifact@v4
               with:
                   name: build
-                  path: frontend/.next # This path should point to the build output
+                  path: ./frontend/.next # This path should point to the build output
+                  if-no-files-found: error
 
     deploy:
         runs-on: ubuntu-latest
