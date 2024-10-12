@@ -43,10 +43,10 @@ jobs:
 
             # Upload the built artifacts to be used in the deployment job
             - name: Upload frontend build artifacts
-              uses: actions/upload-artifact@v3
+              uses: actions/upload-artifact@v4
               with:
                   name: build
-                  path: ./frontend/.next # This path should point to the build output
+                  path: ./frontend/.next/ # This path should point to the build output
                   if-no-files-found: error
 
     deploy:
@@ -61,7 +61,7 @@ jobs:
         steps:
             # Download the previously uploaded artifact from the build job
             - name: Download artifact from build job
-              uses: actions/download-artifact@v3
+              uses: actions/download-artifact@v4
               with:
                   name: build
 
