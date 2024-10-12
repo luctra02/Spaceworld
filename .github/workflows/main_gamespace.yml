@@ -28,7 +28,7 @@ jobs:
           npm run build
       
       - name: check content in frontend
-        run: ls /frontend
+        run: ls ./frontend
 
       - name: zip build for uploading artifact
         run: zip .next.zip ./* -r
