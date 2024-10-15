@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest  # Use Ubuntu for consistency
 
     steps:
       - uses: actions/checkout@v4
@@ -27,17 +27,12 @@ jobs:
           npm install
           npm run build
       
-      - name: check content in frontend
-        run: ls ./frontend
-
-      
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: ./frontend/.next/**/*
+          path: frontend/.next/ 
           if-no-files-found: error
-
   deploy:
     runs-on: ubuntu-latest
     needs: build
