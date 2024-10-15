@@ -26,19 +26,11 @@ jobs:
         run: |
           npm install
           npm run build
-        
-        
-      
-      - name: check content in frontend
-        run: ls ./frontend
-
-
-      - name: check content in .next
-        run: ls ./frontend/.next
       
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
+          include-hidden-files: true
           name: node-app
           path: frontend/.next
           if-no-files-found: error
