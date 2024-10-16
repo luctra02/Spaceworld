@@ -62,5 +62,5 @@ jobs:
             
             - name: Install dependencies and start app
               run: |
-                npm install
-                npm start 
+                npm ci
+
