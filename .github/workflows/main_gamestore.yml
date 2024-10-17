@@ -53,13 +53,13 @@ jobs:
 
             - name: Install dependencies and start app
               run: |
-                npm ci
+                npm install
 
             - name: "Deploy to Azure Web App"
               uses: azure/webapps-deploy@v3
               id: deploy-to-webapp
               with:
-                  app-name: "gamestore"
+                  app-name: "game-store"
                   slot-name: 'Production'
                   publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE}}
                   package: .
