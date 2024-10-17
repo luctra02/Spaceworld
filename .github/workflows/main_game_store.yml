@@ -51,6 +51,10 @@ jobs:
               with:
                   name: node-app
 
+            - name: Install dependencies and start app
+              run: |
+                npm ci
+
             - name: "Deploy to Azure Web App"
               uses: azure/webapps-deploy@v3
               id: deploy-to-webapp
@@ -60,7 +64,5 @@ jobs:
                   publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE}}
                   package: .
             
-            - name: Install dependencies and start app
-              run: |
-                npm ci
+            
 
