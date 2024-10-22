@@ -5,9 +5,8 @@ export async function GET(request: Request) {
 
     const clientId = process.env.IGDB_CLIENT_ID;
     const accessToken = process.env.IGDB_ACCESS_TOKEN;
-    const corsProxyUrl = process.env.CORS_PROXY_URL;
 
-    if (!clientId || !accessToken || !corsProxyUrl) {
+    if (!clientId || !accessToken) {
         return new Response(
             JSON.stringify({
                 error: "Missing required environment variables.",
@@ -22,7 +21,7 @@ export async function GET(request: Request) {
 
         // Fetch data with pagination parameters
         const response = await fetch(
-            `${corsProxyUrl}/https://api.igdb.com/v4/games`,
+            `https://api.igdb.com/v4/games`,
             {
                 method: "POST",
                 headers: {
