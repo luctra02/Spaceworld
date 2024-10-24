@@ -19,7 +19,7 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({ game }) => {
         const fetchFavorites = async () => {
             if (session?.user?.userId) {
                 const response = await fetch(
-                    `http://localhost:8001/v1/api/favorites/${session.user.userId}`,
+                    `https://spaceworld-springboot.azurewebsites.net/v1/api/favorites/${session.user.userId}`,
                 );
                 const favorites = await response.json();
                 const favoriteIds = favorites.map(
@@ -49,7 +49,7 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({ game }) => {
             if (isFavorite) {
                 // Remove game from favorites
                 await fetch(
-                    `http://localhost:8001/v1/api/favorites/${session.user.userId}/delete/${game.id}`,
+                    `https://spaceworld-springboot.azurewebsites.net/v1/api/favorites/${session.user.userId}/delete/${game.id}`,
                     {
                         method: "DELETE",
                     },
@@ -58,7 +58,7 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({ game }) => {
             } else {
                 // Add game to favorites
                 await fetch(
-                    `http://localhost:8001/v1/api/favorites/${session.user.userId}`,
+                    `https://spaceworld-springboot.azurewebsites.net/v1/api/favorites/${session.user.userId}`,
                     {
                         method: "POST",
                         headers: {

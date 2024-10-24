@@ -17,7 +17,7 @@ export default function Login() {
         const fetchData = async () => {
             if (session?.user?.userId) {
                 const response = await fetch(
-                    `http://localhost:8001/v1/api/users/username/${session.user.userId}`,
+                    `https://spaceworld-springboot.azurewebsites.net/v1/api/users/username/${session.user.userId}`,
                 );
                 const username = await response.text();
                 setUsername(username);
@@ -38,7 +38,7 @@ export default function Login() {
             // Send the PUT request
             try {
                 const response = await fetch(
-                    `http://localhost:8001/v1/api/users/username/${session?.user.userId}`,
+                    `https://spaceworld-springboot.azurewebsites.net/v1/api/users/username/${session?.user.userId}`,
                     {
                         method: "PUT",
                         headers: {

@@ -60,13 +60,13 @@ export const options: NextAuthOptions = {
 
                 // First, try to find the user
                 const findUserResponse = await fetch(
-                    `http://localhost:8001/v1/api/users/${userId}`,
+                    `https://spaceworld-springboot.azurewebsites.net/v1/api/users/${userId}`,
                 );
 
                 if (findUserResponse.status === 500) {
                     // If user doesn't exist, create the user
                     const createUserResponse = await fetch(
-                        "http://localhost:8001/v1/api/users",
+                        "https://spaceworld-springboot.azurewebsites.net/v1/api/users",
                         {
                             method: "POST",
                             headers: {

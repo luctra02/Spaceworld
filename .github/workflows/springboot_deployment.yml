@@ -7,8 +7,8 @@ on:
   push:
     branches:
       - main
-    # paths:
-    #   - 'backend/SpringBoot/**'  # Trigger this workflow only on changes in the backend/SpringBoot directory
+    paths:
+      - 'backend/SpringBoot/**'  # Trigger this workflow only on changes in the backend/SpringBoot directory
   workflow_dispatch:
 
 jobs:
