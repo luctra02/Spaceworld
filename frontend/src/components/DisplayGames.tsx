@@ -60,7 +60,7 @@ const DisplayGames: React.FC<DisplayGamesProps> = ({
             } else if (favorites) {
                 if (session?.user?.userId) {
                     const response = await fetch(
-                        `https://spaceworld-springboot.azurewebsites.net/v1/api/favorites/${session.user.userId}`,
+                        `https://spaceworld-production.up.railway.app/v1/api/favorites/${session.user.userId}`,
                     );
                     const favorites = await response.json();
 
