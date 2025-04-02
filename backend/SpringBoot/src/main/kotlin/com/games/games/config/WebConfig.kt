@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 class WebConfig : WebMvcConfigurer {
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**") // Allow all endpoints
-            .allowedOrigins("*") // Allow local and production frontend URLs
+            .allowedOrigins("https://spaceworld-smoky.vercel.app") // Allow local and production frontend URLs
             .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS") // Allow necessary HTTP methods
             .allowCredentials(true) // Allow credentials if needed
     }
