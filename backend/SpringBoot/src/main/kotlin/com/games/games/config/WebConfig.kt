@@ -10,5 +10,7 @@ class WebConfig : WebMvcConfigurer {
         registry.addMapping("/**") // Allow all endpoints
             .allowedOrigins("https://spaceworld-smoky.vercel.app","https://spaceworld-git-prod-flyio-luctra02s-projects.vercel.app/") // Allow local and production frontend URLs
             .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS") // Allow necessary HTTP methods
+            .allowedHeaders("*")
+            .allowCredentials(true) //required if sending cookies or auth headers
     }
 }
