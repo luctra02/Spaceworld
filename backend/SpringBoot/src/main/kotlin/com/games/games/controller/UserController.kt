@@ -39,4 +39,12 @@ class UserController {
     fun findUsername(@PathVariable userId: String): String {
         return userService.findUsername(userId)
     }
+
+    @GetMapping("/test")
+    fun testEndpoint(): String {
+        return "Hello from the backend!"
+    }
+
+    
 }
+

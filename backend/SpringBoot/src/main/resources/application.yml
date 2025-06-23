@@ -1,0 +1,10 @@
+spring:
+    datasource:
+        url: jdbc:postgresql://spaceworld-db.internal:5432/spaceworld-db
+        username: spaceworld
+        password: dfYwuwT8qvc5Xf8
+    jpa:
+        hibernate:
+            ddl-auto: update
+    server:
+        port: 8080
